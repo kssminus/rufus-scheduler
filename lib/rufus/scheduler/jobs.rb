@@ -569,9 +569,17 @@ module Rufus
         @next_time =
           if @first_at && (trigger_time == nil || @first_at > n)
             @first_at
+          elsif @next_time.nil?
+            next_time_from(n)
           else
-            (@next_time || n) + @frequency
+            next_time_future(@next_time, n)
           end
+      end
+
+      def next_time_future(time, now)
+
+        time += @frequency until time > now
+        time
       end
 
       def next_time_from(time)
